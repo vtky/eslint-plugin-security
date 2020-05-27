@@ -26,10 +26,10 @@ function getSerialize(fn, decycle) {
   var keys = [];
   decycle =
     decycle ||
-    function(key, value) {
+    function (key, value) {
       return '[Circular ' + getPath(value, seen, keys) + ']';
     };
-  return function(key, value) {
+  return function (key, value) {
     var ret = value;
     if (typeof value === 'object' && value) {
       if (seen.indexOf(value) !== -1) {
@@ -52,21 +52,29 @@ function stringify(obj, fn, spaces, decycle) {
 
 stringify.getSerialize = getSerialize;
 
-module.exports = function(context) {
-  return {
-    MemberExpression: function(node) {
-      if (node.computed === true) {
-        if (node.property.type === 'Identifier') {
-          if (node.parent.type === 'VariableDeclarator') {
-            context.report(node, 'Variable Assigned to Object Injection Sink');
-          } else if (node.parent.type === 'CallExpression') {
-            // console.log(node.parent)
-            context.report(node, 'Function Call Object Injection Sink');
-          } else {
-            context.report(node, 'Generic Object Injection Sink');
+module.exports = {
+  meta: {
+    docs: {
+      description: 'Detect instances of var[var]',
+      category: 'Security'
+    }
+  },
+  create(context) {
+    return {
+      MemberExpression: function (node) {
+        if (node.computed === true) {
+          if (node.property.type === 'Identifier') {
+            if (node.parent.type === 'VariableDeclarator') {
+              context.report(node, 'Variable Assigned to Object Injection Sink');
+            } else if (node.parent.type === 'CallExpression') {
+              // console.log(node.parent)
+              context.report(node, 'Function Call Object Injection Sink');
+            } else {
+              context.report(node, 'Generic Object Injection Sink');
+            }
           }
         }
       }
-    }
-  };
+    };
+  }
 };

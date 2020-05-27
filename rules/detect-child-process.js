@@ -37,6 +37,7 @@ module.exports = function(context) {
         if (
           node.parent &&
           node.parent.arguments &&
+          node.parent.arguments[0] &&
           node.parent.arguments[0].type !== 'Literal'
         ) {
           return context.report(

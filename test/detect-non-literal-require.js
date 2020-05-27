@@ -2,15 +2,15 @@
 
 const RuleTester = require('eslint').RuleTester;
 RuleTester.setDefaultConfig({
-    parser: 'babel-eslint'
+  parser: 'babel-eslint'
 });
 const tester = new RuleTester();
 const ruleName = 'detect-non-literal-require';
 
 tester.run(ruleName, require(`../rules/${ruleName}`), {
   valid: [
-      { code: 'var a = require(\'b\')' },
-      { code: 'var a = require(`b`)' }
+    { code: 'var a = require(\'b\')' },
+    { code: 'var a = require(`b`)' }
   ],
   invalid: [
     {

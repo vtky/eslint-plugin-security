@@ -31,7 +31,7 @@ module.exports = {
       'readInt32BE',
       'readFloatLE',
       'readFloatBE',
-      'readDoubleL',
+      'readDoubleLE',
       'readDoubleBE'
     ];
 

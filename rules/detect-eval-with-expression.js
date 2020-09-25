@@ -19,11 +19,13 @@ module.exports = {
   create(context) {
     return {
       CallExpression: function (node) {
-        if (node.callee.name === 'eval' && node.arguments[0].type !== 'Literal') {
-          context.report(
-            node,
-            'eval with argument of type ' + node.arguments[0].type
-          );
+        if (typeof node.arguments[0] !== "undefined" && typeof node.arguments[0].type !== "undefined") {
+          if (node.callee.name === 'eval' && node.arguments[0].type !== 'Literal') {
+            context.report(
+              node,
+              'eval with argument of type ' + node.arguments[0].type
+            );
+          }
         }
       }
     };
